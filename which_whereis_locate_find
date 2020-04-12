@@ -1,0 +1,47 @@
+!#脚本文件名的查询-which    #利用PATH指定路径查找
+#1)which command 
+   #寻找command,返回第一个找到的结果
+#2)which -a command
+   忽略#寻找command,返回所有找到的结果
+  
+!#文件名查找-whereis        #利用数据库查找
+#whereis file/catalogue
+#whereis -b  file   找二进制格式文件 
+         -m  file   找在说明文件manual路径下的文件
+         -s  file   找source源文件
+         -u  file   找不在上述三个选项的其他文件
+         
+!#文件名查找-locate         #利用数据库查找
+#locate -i keyword  忽略大小写
+        -r keyword  后可接正则表达式
+ 
+!#文件名查找-find           #利用PATH指定路径查找
+#find [PATH] [OPTION] [ACTION]
+              -mtime   n/+n/-n  （modify time）显示的是文件内容被修改的最后时间
+              -atime   n/+n/-n  （access time）显示的是文件中的数据最后被访问的时间
+              -ctime   n/+n/-n  （change time）显示的是文件的权限、拥有者、所属的组、链接数发生改变时的时间
+              -newer   file      file为已经存在的文件，比file还要新的文件
+                       #在n天之前的"一天内"被更改过的文件(n)
+                       #在n天之前,不包含n天,被更改过的文件(+n)
+                       #在n天之内,含n天这天,被更改过的文件(-n)
+              -uid     n         查询UID(用户ID)为n的文件
+              -gid     n         查询GID(用户组ID)为n的文件
+      -user/-group     name      查询所属用户名/组为name的文件
+      -nouser/nogroup            查询不属于任何用户(组)的文件
+              -name    filename  查找文件名为filename,支持模糊查询
+              -size    +/-SIZE   查询比SIZE大或小的文件
+              -type    TYPE      查找文件类型为TYPE的文件
+              -perm    +mode     搜寻文件权限包含任一mode的权限的文件
+                                 -rwxr-xr-x(755)
+                                 执行-perm +755     则755和-rw都显示，755也有-rw属性
+                       -mode     搜寻文件权限必须全部包括mode权限的文件
+                                 -rwxr--r--(0744)  -rwsr-xr-x(4755)
+                                 执行-perm -0744    则0744和4755都显示，4755属性包括0744属性
+#其他操作  .......................-exec command  command为其他命令，处理查询到的结果
+                              ...-print
+                              
+
+                                 
+                                      
+                                 
+              
