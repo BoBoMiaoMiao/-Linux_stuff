@@ -1,0 +1,48 @@
+for catalogue: default attribute is rwxr-xr-x
+for file: default attribute is rw-r--r--
+ 
+look default attribute: umask -S
+set default attribute: umask attribute-number
+Notice:the biggest attribute-number for catalogue is 777(rwxrwxrwx)
+        the ................... for file is 666(rw-rw-rw-)
+eg:when attribute-number=022,catalogue attribute=777-022=755(rwxr-xr-x)
+                             ,file attribute=666-022=644(rw-r--r--)
+                             
+Set attribute:  chattr [+/-/=] [A/S/a/c/d/i/s/u] file/catalogue
+                          +                      增加某一个特殊参数
+                          -                      删除某一个特殊参数
+                          =                      仅有后面接的参数
+                                      A          存取时间atime不会被修改，避免I/O较慢
+                                      S          进行文件修改会同步写入磁盘(一般非同步）
+                                      a          只能加数据，不能删除或修改(root配置)
+                                      c          自动压缩文件，读取时自动解压，先压缩再存储
+                                      d          文件不会被dump备份
+                                      i          文件不能被删除/改名/配置连结/写入/增加(root配置)
+                                      s          文件被删除，硬盘也会删除，无法找回
+                                      u          文件被删除，硬盘中不删除，救援文件
+Look attribute:  lsattr [a/d/R] file/catalogue
+                           a    将隐藏文件列出
+                           d    仅列出目录本身属性
+                           R    连同子目录数据一并列出
+Look type:     file [filename]
+
+
+Others:
+       #文件权限 Linux 针对文件权限分为三组，即用户，用户组，其他 可通过 ll(ls -l) 查看文件权限
+       #文件权限相关共10个字符，其意义分别为:
+                                         第1个字符：文件类型
+                                         [d]表示文件目录
+                                         [-]表示文件
+                                         [|]表示连接文件
+                                         [b]表示设备文件里的可供存储的接口设备
+                                         [c]表示设备文件里面的串行端口设备，如键盘
+                                         第2~4个字符：用户权限
+                                         第5~7个字符：用户组权限
+                                         第8~10个字符：其他用户权限
+       #例：-rw-r----x 1 A G1 807103 2007-01-07 /file    该文件属于用户 A,属于用户组 G1
+       
+       #权限与属性更改： chgrp:更改文件所属用户组
+                       chown:更改文件所有者
+                       chmod：更改文件权限         -R：递归参数(recursive) 的持续更改，连同子目录下的所有文件一起更改
+ 
+ 
