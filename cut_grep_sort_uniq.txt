@@ -1,0 +1,92 @@
+#管道命令与连续命令不同，连续命令中的各个命令不存在相关性只是顺序执行
+#对于管道命令来说 cmd1|cmd2. cmd2需要cmd1产生的输出流作为cmd2的输入流,命令之间存在很强的依赖关系，并且管道命令只能处理正确的输出数据流
+cut: #从某一行将一段信息切出来
+     #可以进行单行与多行分割，对于多行每一行都看做单独的一行分割与获取 field
+    -d    后接分割字符与-f 连用
+    -f    获取经-d 分割后的第几个字段
+    -c    以字符的单位取出固定字符区间，适用于排列正确的信息
+          选取范围 a-b 如果是从第 a 个字符到最后可写成 a-
+###   [root@localhost ~] echo $PATH |cut -d ':' -f 1  #单行分割
+      [root@localhost ~] last -5|cut -d ' ' -f 1  #多行分割
+      [root@localhost ~] export|cut -c 12-   #范围选取
+
+grep: #分析一行信息，若当中存在我们需要的信息，则将该行输出，grep 后还可接正则表达式或通配符进行查询
+     grep [-acinv] [-A] [-B] [--color=auto] ‘查找字符串’ filename
+             -a                              将 binary 文件以 text 文件方式查找数据
+             -c                              计算‘查找字符串’次数
+             -i                              忽略大小写
+             -n                              输出行号
+             -v                              反向选择
+                    -A                       后面可跟数字，代表除了本行外，后续的 n 行也都列出来
+                         -B                  后面可跟数字，代表除了本行外，前面的 n 行也都列出来
+                              --color=auto   关键字部分添加颜色
+###   [root@localhost ~] last -3|grep 'root' 
+      [root@localhost ~]# last -5|grep -vn 'root'
+      [root@localhost ~]# last |grep -c 'root'
+      [root@localhost ~]# last -5|grep -n 'roo*' #通配符查找  
+
+sort: #可以按照不同的数据类型来排序,建议语系使用 LANG=C
+     sort [-fbMnrtuk]文件或输入流
+               -f                忽略大小写
+               -b                忽略最前面的空格
+               -M                以月份（英文）来排序                
+               -r                反向排序
+               -t                分隔符与-k连用
+               -u                uniq
+               -k                以field进行排序
+               -n                按照计数排序
+###  [root@localhost ~] cat /etc/passwd |sort -t ':' -k 3
+
+uniq: #将重复的数据仅列出一列
+     -i      忽略大小写
+     -c      进行计数
+
+wc:  #帮助我们统计文件字符信息
+   -i 仅列出行
+   -w 仅列初子
+   -m 字符数 
+# [root@localhost ~] cat /etc/man.config |wc  #141(行数) 722(字数) 4617(字符数)
+
+tee: #双重数据流,既想将输出数据流保存到文件也想同时控制台也会显示
+    -a file   以累加的方式进行添加
+
+tr: #字符转换命令
+    #可以用来删除和替换一些文字信息
+    #只是改变输出内容，并不会真正去修改文件的内容
+  –d ‘字符’               删除
+  –s ‘原字符’‘替换字符’ 替换
+
+col: #将一些特殊字符进行转换
+    -x       将 tab 键转成相应的空格
+    -b       在文字内有反斜杠，仅保留反斜杠后面接的那个字符
+
+expand: #将[tab]按键转为空格键
+       -t         [tab] 按键替换多少个空格字符 
+
+split: #切割命令
+split [-bl] file PREFIX
+       -b               后面可接欲切割的文件大小
+       -1               以行数进行切割
+                 PREFIX 切割后文件的前导符
+###  [root@localhost ~] split -b 300k /etc/termcap newter
+
+xargs: #参数代换
+       #参数代换的作用:
+                       1.作为某些指令的参数。比如 which, finger ,find ,whereis 等
+                       2.作为某些不支持管道命令的输入数据流
+xargs [-epn] command
+        -e             就是 EOF 的意思，后面可接一个字符串，当分析到这个字符串时，就会停止继续工作
+        -p             在执行每个参数时，都会询问用户
+        -n             后面接次数，执行 command 的次数
+
+通配符：#通配符和正则表达式不是一个东西
+       *        代表0~n 个任意字符
+       ?        代表一定有一个字符
+       []       代表一定有一个括号内的字符
+       [-]      代表一定是连续字符中的一个.例如：[0-9]代表一个是0-9中的一个字符。前提字符必须是连续的
+       [^]      ^表示反向选择例如[^abc]代表一个非 abc 的字符
+       
+ 
+    
+    
+
