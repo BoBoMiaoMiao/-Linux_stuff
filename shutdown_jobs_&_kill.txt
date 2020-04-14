@@ -1,0 +1,69 @@
+sync:
+     强行将内存数据写入硬盘，reboots/shutdown/halt执行前会自动调用sync
+
+shutdown [-t 秒] [rkhnfFc] 时间 [警告信息]：
+           -t  s                           过几秒后关机
+                     -k                    不是真的关机，只是发出警告信息
+                     -r                    将系统服务停掉后立即重启
+                     -h                    将系统服务停掉后立即关机
+                     -n                    不经过init程序，直接以shutdown功能来关机
+                     -f                    系统重启后，强制略过fsck的磁盘检查
+                     -F                    系统重启后，强制进行fsck的磁盘检查
+                     -c                    取消已经在进行的shutdown命令内容
+
+halt: #调用shutdown -h now ,杀死应用进程，执行sync系统调用，文件系统写操作完成后停止内核
+      -d            不在wtmp中记录
+      -f            无论runlevel=?，不调用shutdown强制关闭系统
+      -i            执行halt前，关闭全部的网络界面
+      -n            执行halt前，不用先执行sync
+      -p            执行halt后，执行poweroff
+      -w            仅在wtmp中记录，而不实际结束系统
+#halt会先检测系统的runlevel,当runlevel=0 or 6,关闭系统；否则调用shutdown关闭系统 
+#8个runlevel:
+             0    Halt the system
+             1    Single user mode
+             2    Basic multi user mode
+             3    Multi user mode
+             5    Multi user mode with GUI
+             6    Reboot the system
+             S,s  Single user mode
+#多数桌面linux系统缺省runlevel=5,用户登录是图形界面
+ 多数服务器linux系统缺省runlevel=3,用户登录是字符界面
+ runlevel=1 or 2,除了调试之外很少用
+ runlevel=s or S,为Single user mode做准备
+
+
+#前台：你可以控制于执行命令的那个环境（串行工作）
+#后台：可以自行运行的工作，无法使用 ctrl+c 终止它（并行工作）
+        
+jobs:
+     -l    列出工作与命令串外，同时列出PID
+     -r    仅列出后台run的工作
+     -s    仅列出后台stop的工作
+# +代表最后一个被放到后台的工作，-代表倒数第二个被放到后台工作的，倒数第三个以及之后的用空白
+
+&： #直接将命令放到后台执行
+    #工作在后台进行，信息前台输出，可采用数据流重定向将输出信息写到文件
+
+ctrl+z: #将目前工作放到后台并暂停 
+
+fg: #将后台工作拿到前台来处理  fg %工作序号
+
+bg: #将后台工作由停止变为运行  bg %工作序号
+
+kill: #后台任务管理       #共有64个signal      
+      kill -signal %工作序号   1：重新读取一次参数的配置文件
+                               2：代表有ctrl+c同样的操作
+                               9：立刻强制删除一个工作
+                               15：以正常方式终止工作
+
+
+#静态进程查看：ps
+#动态进程查看：top
+#进程树查看：pstree
+#设置进程优先级：nice
+#查询文件被哪个进程使用：fuser
+#查询进程正在使用的文件：lsof
+#查询正在执行进程的PID: pidof
+      
+                                 
