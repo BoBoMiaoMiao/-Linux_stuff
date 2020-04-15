@@ -1,0 +1,24 @@
+#命名别名
+alias 别名='命令',如果后面什么也不跟，代表查询所有别名命名信息
+unalias 别名
+
+#历史命令
+# $HISTSIZE记录了shell以及文件中最大存储历史记录数量系统注销时会将bashshell历史记录记录到文件中~/.bash_history
+history  n   数字，列出最近n条命令
+         -c  将目前 shell 中所有历史命令全部清除
+         -a  将目前新增的历史命令添加到 histfiles，若没有加 histfiles 则默认添加到 ~/.bash_history
+         -r  将 histfiles 读取到 这个 shell 的记忆
+         -w  将目前的 history 记忆写入 histfiles 中
+
+
+#变量显示  echo $var_name
+
+#变量内容删除  echo ${var#/key}:从前往后删除符合 key 最短的那一个
+                    ${var##/key}:从前往后删除符合 key 最长的那一个
+                    ${var%/key}:从后往前删除符合 key 最短的那一个
+                    ${var%%/key}:从后往前删除符合 key 最短的那一个
+
+#变量内容替换  echo ${var/旧字符串/新字符串}:替换第一个满足条件的字符串
+                    ${var//旧字符串/新字符串}:替换所有满足条件的字符串
+
+# $负责是读取，echo 负责显示
